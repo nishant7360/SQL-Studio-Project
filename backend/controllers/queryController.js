@@ -19,31 +19,6 @@ export const queryExecute = async (req, res) => {
         message: "Assignment not found",
       });
     }
-    for (const table of assignment.sampleTables) {
-      const tableName = table.tableName;
-      createdTables.push(tableName);
-      const columns = table.columns
-        .map((col) => `${col.columnName} ${col.dataType}`)
-        .join(", ");
-      await pool.query(`
-            CREATE TABLE ${tableName} (
-              ${columns}
-            )
-          `);
-      for (const row of table.rows) {
-        const keys = Object.keys(row);
-        const values = Object.values(row);
-        const columnsString = keys.join(", ");
-        const valuesString = values
-          .map((val) => (typeof val === "string" ? `'${val}'` : val))
-          .join(", ");
-        await pool.query(`
-              INSERT INTO ${tableName}
-              (${columnsString})
-              VALUES (${valuesString})
-            `);
-      }
-    }
     const result = await pool.query(query);
     return res.status(200).json({
       status: "success",
@@ -56,14 +31,6 @@ export const queryExecute = async (req, res) => {
       status: "fail",
       message: error.message,
     });
-  } finally {
-    for (const tableName of createdTables) {
-      try {
-        await pool.query(`DROP TABLE IF EXISTS ${tableName}`);
-      } catch (error) {
-        console.log("Table delete error:", error.message);
-      }
-    }
   }
 };
 
