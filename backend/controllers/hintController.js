@@ -1,5 +1,6 @@
 import Assignment from "../models/assignmentModel.js";
 import groq from "../utils/groq.js";
+
 export const hintGeneration = async (req, res) => {
   try {
     const { assignmentId, userQuery, previousHints = [] } = req.body;
@@ -12,6 +13,14 @@ export const hintGeneration = async (req, res) => {
         message: "Assignment not found",
       });
     }
+
+    if (previousHints.length >= 3) {
+      return res.status(500).json({
+        status: "fail",
+        message: "3 Hints already generated",
+      });
+    }
+
     const difficulty = assignment.description?.toLowerCase();
     let difficultyPrompt = "";
 

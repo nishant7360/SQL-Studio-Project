@@ -5,6 +5,7 @@ export const getAllAssignments = async (req, res) => {
     const assignments = await Assignment.find();
     return res.status(200).json({
       status: "success",
+      results: assignments.length,
       data: assignments,
     });
   } catch (error) {
