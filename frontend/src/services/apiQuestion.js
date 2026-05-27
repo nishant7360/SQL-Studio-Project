@@ -18,8 +18,9 @@ export async function getAllQuestions() {
 
 export async function getQuestionById(id) {
   try {
-    const response = await axios.get(`${BASE_URL}"/get-assignment/${id}`);
-    return response.data;
+    const response = await axios.get(`${BASE_URL}/get-assignment/${id}`);
+
+    return response.data.data;
   } catch (error) {
     console.log(error);
 

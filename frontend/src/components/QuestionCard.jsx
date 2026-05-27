@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const difficultyConfig = {
   Easy: "text-green-500",
@@ -12,9 +13,12 @@ function QuestionCard({ data, index }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-zinc-500 text-sm w-6 shrink-0">{index}.</span>
-          <span className="text-zinc-100 text-sm font-medium truncate">
+          <Link
+            to={`/questionset/${data._id}`}
+            className="text-zinc-100 text-sm font-medium truncate"
+          >
             {data.title}
-          </span>
+          </Link>
         </div>
 
         <span

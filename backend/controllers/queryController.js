@@ -5,7 +5,7 @@ export const queryExecute = async (req, res) => {
   const createdTables = [];
   try {
     const { id, query } = req.body;
-
+    console.log(id, query);
     if (!query.trim().toLowerCase().startsWith("select")) {
       return res.status(400).json({
         message: "Only SELECT queries allowed",
@@ -42,20 +42,13 @@ const normalize = (data) =>
 export const checkOutput = async (req, res) => {
   try {
     const { output, expectedOutput } = req.body;
-    const normalize = (data) =>
-      JSON.stringify(
-        data.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
-      );
-
+    if (output.length !== expectedOutput.length) {
+      return res.status(200).json({ status: "fail", message: "Invalid Query" });
+    }
     const isCorrect = normalize(output) === normalize(expectedOutput);
-    return res.status(200).json({
-      status: "success",
-      isCorrect,
-    });
+    return res.status(200).json({ status: "success", isCorrect });
   } catch (error) {
-    return res.status(500).json({
-      status: "fail",
-      message: error.message,
-    });
+    console.log("checkOutput error:", error.message);
+    return res.status(500).json({ status: "fail", message: error.message });
   }
 };
