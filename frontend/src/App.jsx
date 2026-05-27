@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import { ThemeProvider } from "./components/themeProvide";
 import QuestionSet from "./pages/QuestionSet";
 import PageNotFound from "./pages/PageNotFound";
+import QuestionDetail from "./features/Questions/QuestionDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +26,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/questionset" element={<QuestionSet />} />
+              <Route path="/questionset/:id" element={<QuestionDetail />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
