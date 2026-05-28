@@ -7,6 +7,7 @@ const assignmentSchema = new mongoose.Schema(
     question: String,
     sampleTables: Array,
     expectedOutput: Object,
+    seedIndex: { type: Number, default: null },
   },
   {
     timestamps: true,

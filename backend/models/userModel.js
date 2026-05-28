@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -34,4 +35,15 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("User", userSchema);
+userSchema.pre("save", async function () {
+  if (!this.isModified("passowrd")) return;
+  this.password = await bcrypt.hash(this.password, 8);
+});
+
+userSchema.methods.checkPassword = function (candidatePassword, userPassword) {
+  return bcrypt.compare(candidatePassword, userPassword);
+};
+
+const User = mongoose.model("User", userSchema);
+
+export default User;

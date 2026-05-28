@@ -21,7 +21,7 @@ function QuestDetails({ question }) {
 
   return (
     <div
-      className="flex flex-col h-screen border-r border-zinc-800"
+      className="flex flex-col h-full border-r border-zinc-800"
       style={{ backgroundColor: "#18181b" }}
     >
       <div className="px-6 pt-6 pb-4 shrink-0">
