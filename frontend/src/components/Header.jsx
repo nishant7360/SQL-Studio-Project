@@ -1,8 +1,3 @@
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,20 +8,56 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="border-b bg-background shadow-sm sticky top-0 z-50">
+    <header
+      className="border-b border-zinc-800 sticky top-0 z-50"
+      style={{ backgroundColor: "#18181b" }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="bg-primary rounded-md w-8 h-8 flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">S</span>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="bg-primary rounded-md w-8 h-8 flex items-center justify-center shrink-0">
+              <span className="text-primary-foreground font-bold text-sm">
+                S
+              </span>
+            </div>
+            <span className="text-base font-semibold tracking-tight text-zinc-100">
+              SQL Studio
+            </span>
           </div>
-          <span className="text-xl font-semibold tracking-tight">
-            SQL Studio
-          </span>
+
+          <nav className="flex items-center gap-5 ml-20">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `text-sm px-3 py-1.5 rounded-md transition-colors ${
+                  isActive
+                    ? "text-zinc-100 bg-zinc-800"
+                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/questionset"
+              className={({ isActive }) =>
+                `text-sm px-3 py-1.5 rounded-md transition-colors ${
+                  isActive
+                    ? "text-zinc-100 bg-zinc-800"
+                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                }`
+              }
+            >
+              Questions
+            </NavLink>
+          </nav>
         </div>
 
+        {/* Right — Avatar */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">

@@ -2,10 +2,9 @@ import Assignment from "../models/assignmentModel.js";
 import { pool } from "../utils/db.js";
 
 export const queryExecute = async (req, res) => {
-  const createdTables = [];
   try {
     const { id, query } = req.body;
-    console.log(id, query);
+
     if (!query.trim().toLowerCase().startsWith("select")) {
       return res.status(400).json({
         message: "Only SELECT queries allowed",
@@ -19,7 +18,17 @@ export const queryExecute = async (req, res) => {
         message: "Assignment not found",
       });
     }
-    const result = await pool.query(query);
+
+    let rewrittenQuery = query;
+    for (const table of assignment.sampleTables) {
+      const prefixed = `q${assignment.seedIndex}_${table.tableName}`;
+      const regex = new RegExp(`\\b${table.tableName}\\b`, "gi");
+      rewrittenQuery = rewrittenQuery.replace(regex, prefixed);
+    }
+
+    console.log("Rewritten query:", rewrittenQuery);
+
+    const result = await pool.query(rewrittenQuery);
     return res.status(200).json({
       status: "success",
       result: result.rows,
