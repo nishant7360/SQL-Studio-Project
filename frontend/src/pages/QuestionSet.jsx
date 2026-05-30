@@ -48,7 +48,7 @@ function QuestionSet() {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div className="max-w-7xl mx-auto mt-10">
+    <div className="max-w-7xl mx-auto mt-5">
       <div className="flex justify-end px-4 sm:px-6 lg:px-8 mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

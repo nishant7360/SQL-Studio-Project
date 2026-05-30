@@ -20,7 +20,7 @@ function SQLEditor() {
       style={{ backgroundColor: "#18181b" }}
     >
       <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 shrink-0">
-        <span className="text-xs text-zinc-500 font-mono">query.sql</span>
+        <span className="text-xs text-zinc-500 font-mono">sql</span>
         <button
           onClick={runQuery}
           disabled={isRunning}
@@ -56,7 +56,7 @@ function SQLEditor() {
 
       <div
         className="shrink-0 border-t border-zinc-800 flex flex-col"
-        style={{ height: "40%" }}
+        style={{ height: "45%" }}
       >
         <div className="px-4 py-2 border-b border-zinc-800 shrink-0">
           <span className="text-xs font-medium text-zinc-400">Output</span>

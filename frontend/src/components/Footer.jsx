@@ -9,7 +9,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <span className="text-xs text-zinc-500 font-medium">SQL Studio</span>
         <span className="text-xs text-zinc-600">
-          © {new Date().getFullYear()} Nishant Yadav. All rights reserved.
+          © {new Date().getFullYear()} SQL Studio. All rights reserved.
         </span>
       </div>
     </footer>

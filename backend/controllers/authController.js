@@ -9,10 +9,10 @@ const jwtToken = (id) => {
   });
 };
 
-export const signin = async (req, res) => {
+export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
+    console.log(name, email);
     if (!name || !email || !password) {
       return res.status(500).json({
         statu: "fail",
@@ -53,7 +53,7 @@ export const login = async (req, res) => {
         message: "User with this email does't exist",
       });
     }
-    console.log(user);
+    console.log(`${user?.name} loggedin with ${user?.email}`);
 
     if (!user.checkPassword(password, user.password)) {
       return res.status(500).json({
@@ -99,7 +99,6 @@ export const protect = async (req, res, next) => {
     }
 
     const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    console.log(decode);
     const user = await User.findById(decode.id);
 
     if (!user) {
