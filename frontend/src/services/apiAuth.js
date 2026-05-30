@@ -1,0 +1,43 @@
+import axios from "axios";
+
+const BASE_URL = "http://localhost:8000/api/auth";
+
+export async function signup({ name, email, password }) {
+  try {
+    const response = await axios.post(`${BASE_URL}/signup`, {
+      name,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("signup error : ", error);
+    throw new Error(error.message);
+  }
+}
+
+export async function login({ email, password }) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/login`,
+      { email, password },
+      { withCredentials: true },
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Login error : ", error);
+    throw new Error(error.message);
+  }
+}
+export async function getMe() {
+  try {
+    const response = await axios.get(`${BASE_URL}/getMe`, {
+      withCredentials: true,
+    });
+    return response.data.data.user;
+  } catch (error) {
+    console.log("Get me error : ", error);
+    throw new Error(error.message);
+  }
+}

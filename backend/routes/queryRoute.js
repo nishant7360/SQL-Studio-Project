@@ -4,7 +4,7 @@ import { protect } from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.post("/execute", protect, queryExecute);
+router.post("/execute", queryExecute);
 router.post("/checkOutput", checkOutput);
 
 export default router;

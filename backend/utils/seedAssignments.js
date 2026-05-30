@@ -27,7 +27,6 @@ const seedData = async () => {
       ),
     );
 
-    // add seedIndex to each assignment before inserting
     const dataWithIndex = data.map((assignment, i) => ({
       ...assignment,
       seedIndex: i + 1,
