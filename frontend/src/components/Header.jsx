@@ -8,9 +8,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({ user, isAuthenticated }) {
+  const navigate = useNavigate();
+
   return (
     <header
       className="border-b border-zinc-800 sticky top-0 z-50"
@@ -57,34 +59,44 @@ function Header() {
           </nav>
         </div>
 
-        {/* Right — Avatar */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-muted-foreground">
-                  john@example.com
-                </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500">
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Right side */}
+        {isAuthenticated ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="" alt="User" />
+                  <AvatarFallback className="bg-zinc-700 text-zinc-100">
+                    {user?.name?.[0]?.toUpperCase() ?? "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium">{user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-500">
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button
+            variant="outline"
+            className="h-8 text-xs border-zinc-700 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800"
+            onClick={() => navigate("/login")}
+          >
+            Sign in
+          </Button>
+        )}
       </div>
     </header>
   );

@@ -5,6 +5,7 @@ export function useGetMe() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -12,6 +13,7 @@ export function useGetMe() {
       setError(null);
       try {
         const data = await getMe();
+        setUser(data);
         setIsAuthenticated(!!data?.name);
       } catch (error) {
         setIsAuthenticated(false);
@@ -24,5 +26,5 @@ export function useGetMe() {
     getCurrentUser();
   }, []);
 
-  return { isLoading, isAuthenticated, error };
+  return { isLoading, isAuthenticated, user, error };
 }

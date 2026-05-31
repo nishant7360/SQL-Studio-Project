@@ -34,8 +34,10 @@ function useExcQuery() {
       const checkData = await checkQueryOutput(
         data.result,
         data.expectedOutput.value,
+        id,
+        query,
       );
-
+      console.log("checkData:", checkData);
       if (checkData.status === "fail") {
         setVerdict("wrong");
       } else {

@@ -10,10 +10,14 @@ export async function excQuery(query, id) {
     .trim();
 
   try {
-    const response = await axios.post(`${BASE_URL}/execute`, {
-      id,
-      query: cleanQuery,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/execute`,
+      {
+        id,
+        query: cleanQuery,
+      },
+      { withCredentials: true },
+    );
     return response.data;
   } catch (error) {
     // extract backend message instead of axios generic message
@@ -23,12 +27,18 @@ export async function excQuery(query, id) {
   }
 }
 
-export async function checkQueryOutput(result, expectedOutput) {
+export async function checkQueryOutput(result, expectedOutput, id, query) {
   try {
-    const response = await axios.post(`${BASE_URL}/checkOutput`, {
-      output: result,
-      expectedOutput,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/checkOutput`,
+      {
+        output: result,
+        expectedOutput,
+        id,
+        query,
+      },
+      { withCredentials: true },
+    );
     return response.data;
   } catch (error) {
     console.log("Query check output error : ", error);

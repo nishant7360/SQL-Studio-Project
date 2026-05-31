@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Database, Lightbulb } from "lucide-react";
+import { Database, Lightbulb, CheckCircle2, CircleDot } from "lucide-react";
 import SampleTable from "./SampleTable";
 import HintItem from "./HintItem";
 import { useQueryContext } from "@/context/queryContext";
@@ -14,10 +14,13 @@ const difficultyConfig = {
 
 const hintsList = ["AI Hint 1", "AI Hint 2", "AI Hint 3"];
 
-function QuestDetails({ question }) {
-  const { query, setQuery, hints } = useQueryContext();
-
+function QuestDetails({ question, user }) {
   if (!question) return null;
+
+  const attempt = user?.totalQuestionAttempted?.find(
+    (a) => a.questionId?.toString() === question._id?.toString(),
+  );
+  const status = !attempt ? "none" : attempt.isCorrect ? "solved" : "attempted";
 
   return (
     <div
@@ -25,9 +28,17 @@ function QuestDetails({ question }) {
       style={{ backgroundColor: "#18181b" }}
     >
       <div className="px-6 pt-6 pb-4 shrink-0">
-        <h1 className="text-base font-semibold text-zinc-100 mb-3 leading-snug">
-          {question.title}
-        </h1>
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-base font-semibold text-zinc-100 leading-snug">
+            {question.title}
+          </h1>
+          {status === "solved" && (
+            <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+          )}
+          {status === "attempted" && (
+            <CircleDot className="w-4 h-4 text-yellow-500 shrink-0" />
+          )}
+        </div>
         <Badge
           variant="outline"
           className={`text-xs font-medium px-2.5 py-0.5 ${difficultyConfig[question.description] ?? ""}`}
