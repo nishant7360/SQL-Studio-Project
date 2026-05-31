@@ -43,18 +43,60 @@ export const queryExecute = async (req, res) => {
   }
 };
 
-const normalize = (data) =>
-  JSON.stringify(
-    data.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
+const normalizeValues = (data) => {
+  return JSON.stringify(
+    [...data]
+      .map((row) =>
+        Object.values(row)
+          .map((val) => (isNaN(val) ? val : Number(val)))
+          .sort(),
+      )
+      .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
   );
+};
 
 export const checkOutput = async (req, res) => {
   try {
-    const { output, expectedOutput } = req.body;
+    const { output, expectedOutput, id, query } = req.body;
+
+    const user = req.user;
+
+    const alreadySolved = user.totalQuestionAttempted.some(
+      (attempt) =>
+        attempt.questionId.toString() === id && attempt.isCorrect === true,
+    );
+
+    const isCorrect =
+      output.length === expectedOutput.length &&
+      normalizeValues(output) === normalizeValues(expectedOutput);
+
+    if (isCorrect && !alreadySolved) user.totalQuestionSolved += 1;
+
+    const existingAttempt = user.totalQuestionAttempted.find(
+      (attempt) => attempt.questionId.toString() === id,
+    );
+
+    if (existingAttempt) {
+      if (!existingAttempt.isCorrect) {
+        existingAttempt.query = query;
+        existingAttempt.isCorrect = isCorrect;
+        existingAttempt.attemptedAt = Date.now();
+      }
+    } else {
+      user.totalQuestionAttempted.push({
+        questionId: id,
+        query,
+        isCorrect,
+        attemptedAt: Date.now(),
+      });
+    }
+
+    await user.save();
+
     if (output.length !== expectedOutput.length) {
       return res.status(200).json({ status: "fail", message: "Invalid Query" });
     }
-    const isCorrect = normalize(output) === normalize(expectedOutput);
+
     return res.status(200).json({ status: "success", isCorrect });
   } catch (error) {
     console.log("checkOutput error:", error.message);

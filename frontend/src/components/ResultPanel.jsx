@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 
-export function ResultPanel({ result, error, isRunning }) {
+export function ResultPanel({ result, error, isRunning, verdict }) {
   if (isRunning)
     return (
       <div className="flex items-center justify-center h-full">
@@ -37,12 +37,34 @@ export function ResultPanel({ result, error, isRunning }) {
 
   return (
     <div className="h-full flex flex-col">
+      {/* Verdict banner */}
+      {verdict && (
+        <div
+          className={`flex items-center gap-2 px-4 py-2 shrink-0 border-b ${verdict === "correct" ? "bg-green-950 border-green-900" : "bg-red-950 border-red-900"}`}
+        >
+          {verdict === "correct" ? (
+            <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+          ) : (
+            <XCircle className="w-3.5 h-3.5 text-red-500" />
+          )}
+          <span
+            className={`text-xs font-medium ${verdict === "correct" ? "text-green-400" : "text-red-400"}`}
+          >
+            {verdict === "correct"
+              ? "Correct answer!"
+              : "Wrong answer, try again."}
+          </span>
+        </div>
+      )}
+
+      {/* Row count */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-zinc-800 shrink-0">
         <CheckCircle className="w-3.5 h-3.5 text-green-500" />
         <span className="text-xs text-green-500 font-medium">
           {result.length} row{result.length !== 1 ? "s" : ""} returned
         </span>
       </div>
+
       <ScrollArea className="flex-1">
         <Table>
           <TableHeader>

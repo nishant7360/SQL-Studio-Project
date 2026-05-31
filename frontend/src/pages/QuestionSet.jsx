@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useGetMe } from "@/features/auth/useGetMe";
 
 const sortOptions = ["Default", "Easy first", "Medium first", "Hard first"];
 
@@ -18,6 +19,7 @@ const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
 function QuestionSet() {
   const { isLoading, questions, error } = useGetAllQuestions();
   const [sortBy, setSortBy] = useState("Default");
+  const { user } = useGetMe();
 
   const sortedQuestions = Array.isArray(questions)
     ? [...questions].sort((a, b) => {
@@ -77,9 +79,25 @@ function QuestionSet() {
         </DropdownMenu>
       </div>
 
-      {sortedQuestions.map((data, index) => (
-        <QuestionCard key={data._id} data={data} index={index + 1} />
-      ))}
+      {sortedQuestions.map((data, index) => {
+        const attempt = user?.totalQuestionAttempted?.find(
+          (a) => a.questionId?.toString() === data._id?.toString(),
+        );
+
+        const status = !attempt
+          ? "none"
+          : attempt.isCorrect
+            ? "solved"
+            : "attempted";
+        return (
+          <QuestionCard
+            key={data._id}
+            data={data}
+            index={index + 1}
+            status={status}
+          />
+        );
+      })}
     </div>
   );
 }
