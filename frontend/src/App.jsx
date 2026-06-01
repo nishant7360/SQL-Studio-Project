@@ -11,6 +11,7 @@ import Signin from "./pages/Signin";
 import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,13 +28,20 @@ function App() {
         <ReactQueryDevtools initialIsOpen={false} />
         <BrowserRouter>
           <Routes>
-            <Route path="/signup" element={<Signin />} />
-            <Route path="/login" element={<Login />} />
             <Route element={<AppLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/questionset" element={<QuestionSet />} />
               <Route path="/questionset/:id" element={<QuestionDetail />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signin />} />
             </Route>
+
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppLayout />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Route>
+
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

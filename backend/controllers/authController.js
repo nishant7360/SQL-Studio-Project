@@ -83,6 +83,18 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = async (req, res) => {
+  res.cookie("jwt", "", {
+    ...cookieOptions,
+    maxAge: 0,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully",
+  });
+};
+
 export const protect = async (req, res, next) => {
   try {
     let token;
@@ -133,4 +145,41 @@ export const getMe = (req, res) => {
       user: req.user,
     },
   });
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide all the fields!",
+      });
+    }
+
+    const user = req.user;
+
+    const isCorrect = await user.checkPassword(currentPassword, user.password);
+    if (!isCorrect) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide correct current password",
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.log("Change password error : ", error);
+    return res.status(500).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
 };

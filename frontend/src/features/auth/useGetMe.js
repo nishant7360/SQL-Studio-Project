@@ -1,30 +1,17 @@
 import { getMe } from "@/services/apiAuth";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGetMe() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
+  const { data, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getMe,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    async function getCurrentUser() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await getMe();
-        setUser(data);
-        setIsAuthenticated(!!data?.name);
-      } catch (error) {
-        setIsAuthenticated(false);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    getCurrentUser();
-  }, []);
-
-  return { isLoading, isAuthenticated, user, error };
+  return {
+    isLoading,
+    isAuthenticated: !!data?.name,
+    user: data ?? null,
+  };
 }

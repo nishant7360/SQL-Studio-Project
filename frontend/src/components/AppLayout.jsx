@@ -7,9 +7,12 @@ import { Spinner } from "./ui/spinner";
 function AppLayout() {
   const location = useLocation();
   const { isLoading, user, isAuthenticated } = useGetMe();
-  if (isLoading) {
-    <Spinner />;
-  }
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
   const hideFooter = location.pathname.startsWith("/questionset/");
 
   return (

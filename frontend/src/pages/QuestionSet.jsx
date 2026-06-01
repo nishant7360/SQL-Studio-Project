@@ -13,7 +13,6 @@ import { ChevronDown } from "lucide-react";
 import { useGetMe } from "@/features/auth/useGetMe";
 
 const sortOptions = ["Default", "Easy first", "Medium first", "Hard first"];
-
 const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
 
 function QuestionSet() {
@@ -40,6 +39,15 @@ function QuestionSet() {
       })
     : [];
 
+  const totalQuestions = questions?.length ?? 0;
+  const solvedCount = user?.totalQuestionSolved ?? 0;
+  const easyCount =
+    questions?.filter((q) => q.description === "Easy").length ?? 0;
+  const mediumCount =
+    questions?.filter((q) => q.description === "Medium").length ?? 0;
+  const hardCount =
+    questions?.filter((q) => q.description === "Hard").length ?? 0;
+
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -50,8 +58,20 @@ function QuestionSet() {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div className="max-w-7xl mx-auto mt-5">
-      <div className="flex justify-end px-4 sm:px-6 lg:px-8 mb-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-semibold text-zinc-100 mb-1">
+          SQL Questions
+        </h1>
+        <p className="text-xs text-zinc-500">
+          Practice SQL challenges and improve your skills
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between mb-2 px-1">
+        <span className="text-xs text-zinc-600">
+          {totalQuestions} questions
+        </span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -79,25 +99,28 @@ function QuestionSet() {
         </DropdownMenu>
       </div>
 
-      {sortedQuestions.map((data, index) => {
-        const attempt = user?.totalQuestionAttempted?.find(
-          (a) => a.questionId?.toString() === data._id?.toString(),
-        );
+      {/* Question List */}
+      <div className="rounded-lg border border-zinc-800 overflow-hidden pr-1">
+        {sortedQuestions.map((data, index) => {
+          const attempt = user?.totalQuestionAttempted?.find(
+            (a) => a.questionId?.toString() === data._id?.toString(),
+          );
+          const status = !attempt
+            ? "none"
+            : attempt.isCorrect
+              ? "solved"
+              : "attempted";
 
-        const status = !attempt
-          ? "none"
-          : attempt.isCorrect
-            ? "solved"
-            : "attempted";
-        return (
-          <QuestionCard
-            key={data._id}
-            data={data}
-            index={index + 1}
-            status={status}
-          />
-        );
-      })}
+          return (
+            <QuestionCard
+              key={data._id}
+              data={data}
+              index={index + 1}
+              status={status}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
