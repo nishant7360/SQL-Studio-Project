@@ -8,11 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { NavLink, useNavigate } from "react-router-dom";
+import useLogout from "@/features/auth/useLogout";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 function Header({ user, isAuthenticated }) {
   const navigate = useNavigate();
-
+  const { logoutUser } = useLogout();
   return (
     <header
       className="border-b border-zinc-800 sticky top-0 z-50"
@@ -23,11 +24,11 @@ function Header({ user, isAuthenticated }) {
           <div className="flex items-center gap-2">
             <div className="bg-primary rounded-md w-8 h-8 flex items-center justify-center shrink-0">
               <span className="text-primary-foreground font-bold text-sm">
-                S
+                <Link to="/">S</Link>
               </span>
             </div>
             <span className="text-base font-semibold tracking-tight text-zinc-100">
-              SQL Studio
+              <Link to="/">SQL Studio</Link>
             </span>
           </div>
 
@@ -59,7 +60,6 @@ function Header({ user, isAuthenticated }) {
           </nav>
         </div>
 
-        {/* Right side */}
         {isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -80,10 +80,12 @@ function Header({ user, isAuthenticated }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/profile">Profile</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-500">
+              <DropdownMenuItem className="text-red-500" onClick={logoutUser}>
                 Log out
               </DropdownMenuItem>
             </DropdownMenuContent>

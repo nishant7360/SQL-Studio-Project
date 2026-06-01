@@ -38,6 +38,22 @@ export async function getMe() {
     return response.data.data.user;
   } catch (error) {
     console.log("Get me error : ", error);
+    return null;
+  }
+}
+
+export async function logout() {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/logout`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    return response.data.message;
+  } catch (error) {
+    console.log("Error logout : ", error);
     throw new Error(error.message);
   }
 }
