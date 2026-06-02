@@ -83,7 +83,9 @@ function Header({ user, isAuthenticated }) {
               <DropdownMenuItem>
                 <Link to="/profile">Profile</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/settings">Settings</Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-500" onClick={logoutUser}>
                 Log out

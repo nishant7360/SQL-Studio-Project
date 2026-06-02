@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +40,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
               </Route>
             </Route>
 

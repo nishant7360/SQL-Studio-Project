@@ -55,9 +55,10 @@ export const login = async (req, res) => {
     }
     console.log(`${user?.name} loggedin with ${user?.email}`);
 
-    if (!user.checkPassword(password, user.password)) {
-      return res.status(500).json({
-        statu: "fail",
+    const isValid = await user.checkPassword(password, user.password);
+    if (!isValid) {
+      return res.status(400).json({
+        status: "fail",
         message: "Provide valid email and password",
       });
     }
@@ -170,7 +171,7 @@ export const changePassword = async (req, res) => {
 
     user.password = newPassword;
     await user.save();
-
+    console.log("saved password:", user.password);
     return res.status(200).json({
       status: "success",
       message: "Password changed successfully",
