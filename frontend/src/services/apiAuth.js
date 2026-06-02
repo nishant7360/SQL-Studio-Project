@@ -27,7 +27,9 @@ export async function login({ email, password }) {
     return response.data;
   } catch (error) {
     console.log("Login error : ", error);
-    throw new Error(error.message);
+    throw new Error(
+      error.response?.data?.message || "Invalid email or password",
+    );
   }
 }
 export async function getMe() {
@@ -55,5 +57,20 @@ export async function logout() {
   } catch (error) {
     console.log("Error logout : ", error);
     throw new Error(error.message);
+  }
+}
+
+export async function changePassword(currentPassword, newPassword) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/updatePassword`,
+      { currentPassword, newPassword },
+      { withCredentials: true },
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to update password",
+    );
   }
 }
