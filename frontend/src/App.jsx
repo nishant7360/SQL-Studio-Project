@@ -13,6 +13,7 @@ import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./features/auth/ForgotPassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function App() {
               <Route path="/questionset/:id" element={<QuestionDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signin />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>

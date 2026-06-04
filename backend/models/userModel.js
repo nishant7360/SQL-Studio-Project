@@ -33,6 +33,8 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  resetOtp: { type: String, default: null },
+  resetOtpExpiry: { type: Date, default: null },
 });
 
 userSchema.pre("save", async function () {

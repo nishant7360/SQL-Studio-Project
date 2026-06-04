@@ -74,3 +74,36 @@ export async function changePassword(currentPassword, newPassword) {
     );
   }
 }
+
+export async function forgotPassword(email) {
+  try {
+    const response = await axios.post(`${BASE_URL}/forgot-password`, { email });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Something went wrong");
+  }
+}
+
+export async function verifyOTP(email, otp) {
+  try {
+    const response = await axios.post(`${BASE_URL}/verify-otp`, { email, otp });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Invalid OTP");
+  }
+}
+
+export async function resetPassword(email, otp, newPassword) {
+  try {
+    const response = await axios.post(`${BASE_URL}/reset-password`, {
+      email,
+      otp,
+      newPassword,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to reset password",
+    );
+  }
+}
