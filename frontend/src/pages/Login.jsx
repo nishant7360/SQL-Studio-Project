@@ -43,7 +43,7 @@ function Login() {
           </h1>
           <p className="text-xs text-zinc-500 mb-6">Sign in to your account</p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
               <Label className="text-xs text-zinc-400">Email</Label>
               <Input
@@ -55,7 +55,14 @@ function Login() {
                 className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 text-sm h-9"
               />
             </div>
-
+            <div className="self-end">
+              <Link
+                to="/forgot-password"
+                className="text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <div className="flex flex-col gap-1.5">
               <Label className="text-xs text-zinc-400">Password</Label>
               <Input
