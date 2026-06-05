@@ -99,7 +99,6 @@ function QuestionSet() {
         </DropdownMenu>
       </div>
 
-      {/* Question List */}
       <div className="rounded-lg border border-zinc-800 overflow-hidden pr-1">
         {sortedQuestions.map((data, index) => {
           const attempt = user?.totalQuestionAttempted?.find(

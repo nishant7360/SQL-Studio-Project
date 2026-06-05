@@ -2,6 +2,8 @@ import { useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { useQueryContext } from "@/context/queryContext";
 import useExcQuery from ".././features/Query/useQueryExe.js";
+import { useGetMe } from "@/features/auth/useGetMe";
+import { useGetAllQuestions } from "@/features/Questions/useGetAllQuestions";
 import { Spinner } from "@/components/ui/spinner";
 import { ResultPanel } from "./ResultPanel.jsx";
 import { RotateCcw } from "lucide-react";
@@ -11,7 +13,16 @@ const DEFAULT_QUERY = `-- Write your SQL query here\nSELECT `;
 function SQLEditor() {
   const editorRef = useRef(null);
   const { setQuery } = useQueryContext();
-  const { runQuery, isRunning, result, error, verdict } = useExcQuery();
+  const { refetch: refetchUser } = useGetMe();
+  const { refetch: refetchQuestions } = useGetAllQuestions();
+
+  const handleQueryAttempted = () => {
+    refetchUser();
+    refetchQuestions();
+  };
+
+  const { runQuery, isRunning, result, error, verdict } =
+    useExcQuery(handleQueryAttempted);
 
   function handleEditorDidMount(editor) {
     editorRef.current = editor;

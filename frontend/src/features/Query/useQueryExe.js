@@ -3,7 +3,7 @@ import { excQuery, checkQueryOutput } from "@/services/apiQuery";
 import { useQueryContext } from "@/context/queryContext";
 import { useParams } from "react-router-dom";
 
-function useExcQuery() {
+function useExcQuery(onQueryAttempted) {
   const { query } = useQueryContext();
   const { id } = useParams();
   const [isRunning, setIsRunning] = useState(false);
@@ -27,6 +27,10 @@ function useExcQuery() {
         setResult(null);
         setVerdict("wrong");
         setError("Query returned no valid results.");
+        // Call callback after attempt
+        if (onQueryAttempted) {
+          onQueryAttempted();
+        }
         return;
       }
 
@@ -42,6 +46,11 @@ function useExcQuery() {
         setVerdict("wrong");
       } else {
         setVerdict(checkData.isCorrect ? "correct" : "wrong");
+      }
+
+      // Call callback after attempt/solve
+      if (onQueryAttempted) {
+        onQueryAttempted();
       }
     } catch (err) {
       setError(err.message);
