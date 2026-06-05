@@ -6,9 +6,10 @@ export function useGetAllQuestions() {
     isLoading,
     data: questions,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["questions"],
     queryFn: getAllQuestions,
   });
-  return { isLoading, questions, error };
+  return { isLoading, questions, error, refetch };
 }
