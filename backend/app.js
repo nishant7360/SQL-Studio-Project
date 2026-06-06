@@ -17,6 +17,14 @@ app.use(
     credentials: true,
   }),
 );
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+  });
+});
+
 app.use("/api/assignment", assignmentRouter);
 app.use("/api/query", queryRouter);
 app.use("/api/hint", hintGenerationRouter);
