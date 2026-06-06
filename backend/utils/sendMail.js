@@ -61,7 +61,7 @@ const templates = {
   }),
 };
 
-export async function sendEmail(to, type, { name, otp }) {
+export async function sendEmail(to, type, { name, otp } = {}) {
   const { subject, html } = templates[type](name, otp);
 
   await transporter.sendMail({
