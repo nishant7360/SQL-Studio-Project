@@ -1,12 +1,7 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const baseWrapper = (content) => `
   <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #18181b; border-radius: 12px; border: 1px solid #27272a;">
@@ -62,20 +57,10 @@ const templates = {
 };
 
 export async function sendEmail(to, type, { name, otp } = {}) {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-
   const { subject, html } = templates[type](name, otp);
 
-  await transporter.sendMail({
-    from: `"SQL Studio" <${process.env.GMAIL_USER}>`,
+  await resend.emails.send({
+    from: "SQL Studio <onboarding@resend.dev>",
     to,
     subject,
     html,
