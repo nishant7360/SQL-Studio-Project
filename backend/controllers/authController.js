@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
       await sendEmail(user.email, "welcome", { name: user.name });
       console.log("3. email sent");
     } catch (emailError) {
-      console.log("email error:", emailError.message); // ← see what's wrong
+      console.log("email error:", emailError.message);
     }
 
     return res.status(201).json({

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://sql-studio-f9qz.onrender.com/api/auth";
+const BASE_URL = "http://localhost:8000/api/auth";
 
 export async function signup({ name, email, password }) {
   try {

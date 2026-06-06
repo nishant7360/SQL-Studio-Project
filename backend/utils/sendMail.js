@@ -62,6 +62,16 @@ const templates = {
 };
 
 export async function sendEmail(to, type, { name, otp } = {}) {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+
   const { subject, html } = templates[type](name, otp);
 
   await transporter.sendMail({
