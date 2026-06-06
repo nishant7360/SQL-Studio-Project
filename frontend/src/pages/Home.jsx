@@ -12,6 +12,7 @@ import {
   CircleDot,
   Circle,
 } from "lucide-react";
+import { useEffect } from "react";
 
 const difficultyConfig = {
   Easy: "text-green-500",
@@ -28,6 +29,10 @@ const difficultyBadge = {
 function Home() {
   const { questions } = useGetAllQuestions();
   const { user, isAuthenticated } = useGetMe();
+
+  useEffect(() => {
+    document.title = "Home | SQL Studio";
+  }, []);
 
   const previewQuestions = questions?.slice(0, 4) ?? [];
 

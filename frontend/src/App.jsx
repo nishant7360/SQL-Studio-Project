@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
-import { ThemeProvider } from "./components/themeProvide";
+import { ThemeProvider } from "./components/ThemeProvider";
 import QuestionSet from "./pages/QuestionSet";
 import PageNotFound from "./pages/PageNotFound";
 import QuestionDetail from "./features/Questions/QuestionDetail";

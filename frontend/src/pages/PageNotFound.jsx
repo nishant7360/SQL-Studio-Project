@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 function PageNotFound() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Page not found | SQL Studio";
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-full py-20 text-center px-4">

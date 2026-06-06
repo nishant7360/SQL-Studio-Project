@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,10 @@ import { Spinner } from "@/components/ui/spinner";
 function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const { signupUser, isLoading, error } = useSignup();
+
+  useEffect(() => {
+    document.title = "Signup | SQL Studio";
+  }, []);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

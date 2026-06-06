@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangePassword from "@/features/auth/ChangePassword";
 import { useGetMe } from "@/features/auth/useGetMe";
 import { User, Lock, ImagePlus } from "lucide-react";
@@ -14,6 +14,10 @@ const tabs = [
 function Settings() {
   const [activeTab, setActiveTab] = useState("profile");
   const { user } = useGetMe();
+
+  useEffect(() => {
+    document.title = "Settings | SQL Studio";
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

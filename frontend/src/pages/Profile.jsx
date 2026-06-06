@@ -5,10 +5,15 @@ import ProfileHeader from "@/components/ProfileHeader";
 import ProfileProgress from "@/components/ProfileProgress";
 import DifficultyRings from "@/components/DifficultyRing";
 import SolvedQuestions from "@/components/SolvedQuestions";
+import { useEffect } from "react";
 
 function Profile() {
   const { user, isLoading: userLoading } = useGetMe();
   const { questions, isLoading: questionsLoading } = useGetAllQuestions();
+
+  useEffect(() => {
+    document.title = "Profile | SQL Studio";
+  }, []);
 
   if (userLoading || questionsLoading)
     return (

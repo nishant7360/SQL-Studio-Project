@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/query";
+const BASE_URL = " https://sql-studio-f9qz.onrender.com/api/query";
 
 export async function excQuery(query, id) {
   const cleanQuery = query

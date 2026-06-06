@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetAllQuestions } from "@/features/Questions/useGetAllQuestions";
 import { Spinner } from "@/components/ui/spinner";
 import QuestionCard from "@/components/QuestionCard";
@@ -19,6 +19,10 @@ function QuestionSet() {
   const { isLoading, questions, error } = useGetAllQuestions();
   const [sortBy, setSortBy] = useState("Default");
   const { user } = useGetMe();
+
+  useEffect(() => {
+    document.title = "Questions | SQL Studio";
+  }, []);
 
   const sortedQuestions = Array.isArray(questions)
     ? [...questions].sort((a, b) => {

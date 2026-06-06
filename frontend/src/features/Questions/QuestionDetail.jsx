@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetQuestion } from "./useGestQuestion";
 import { Spinner } from "@/components/ui/spinner";
 import QuestDetails from "@/components/QuestDetails";
 import SQLEditor from "@/components/SQLEditor";
-import { QueryProvider, useQueryContext } from "../../context/queryContext";
+import { QueryProvider } from "../../context/queryContext";
 import { useGetMe } from "../auth/useGetMe";
+
 function QuestionDetail() {
   const { isLoading, question, error } = useGetQuestion();
   const { user } = useGetMe();
+
+  useEffect(() => {
+    if (question?.title) {
+      document.title = `${question.title} | SQL Studio`;
+    }
+  }, [question]);
+
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">

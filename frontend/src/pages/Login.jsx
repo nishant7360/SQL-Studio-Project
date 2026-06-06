@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,10 @@ import { Spinner } from "@/components/ui/spinner";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const { loginUser, isLoading, error } = useLogin();
+
+  useEffect(() => {
+    document.title = "Login | SQL Studio";
+  }, []);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -55,16 +59,18 @@ function Login() {
                 className="bg-zinc-900 border-zinc-700 text-zinc-100 placeholder:text-zinc-600 text-sm h-9"
               />
             </div>
-            <div className="self-end">
-              <Link
-                to="/forgot-password"
-                className="text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
+
             <div className="flex flex-col gap-1.5">
-              <Label className="text-xs text-zinc-400">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-xs text-zinc-400">Password</Label>
+                <Link
+                  to="/forgot-password"
+                  className="text-zinc-500 hover:text-zinc-300 text-xs transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
               <Input
                 name="password"
                 type="password"

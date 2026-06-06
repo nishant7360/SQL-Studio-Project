@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/hint";
+const BASE_URL = " https://sql-studio-f9qz.onrender.com/api/hint";
 
 export async function getHints(id, query, hints = []) {
   try {
