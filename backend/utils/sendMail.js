@@ -36,7 +36,7 @@ const templates = {
   welcome: (name) => ({
     subject: "Welcome to SQL Studio",
     html: baseWrapper(`
-      <h2 style="color: #f4f4f5; margin-bottom: 8px;">Welcome, ${name}! 👋</h2>
+      <h2 style="color: #f4f4f5; margin-bottom: 8px;">Welcome, ${name}! </h2>
       <p style="color: #a1a1aa; font-size: 14px; margin-bottom: 4px;">
         Thanks for signing up.
       </p>

@@ -16,15 +16,15 @@ export const signup = async (req, res) => {
     const { name, email, password } = req.body;
     console.log(name, email);
     if (!name || !email || !password) {
-      return res.status(500).json({
-        statu: "fail",
+      return res.status(400).json({
+        status: "fail",
         message: "Provide all necessary fields",
       });
     }
 
     const user = await User.create({ name, email, password });
-
-    return res.status(200).json({
+    await sendEmail(user.email, "welcome", { name: user.name });
+    return res.status(201).json({
       status: "success",
       message: "User created successfully",
     });
@@ -109,7 +109,7 @@ export const protect = async (req, res, next) => {
     if (!token) {
       return res.status(400).json({
         statu: "fail",
-        message: "You are't logged in ,please login",
+        message: "You are not logged in. Please log in to continue.",
       });
     }
 
