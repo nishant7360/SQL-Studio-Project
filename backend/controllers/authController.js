@@ -14,26 +14,27 @@ const jwtToken = (id) => {
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(name, email);
+    console.log("1. received:", name, email);
+
     if (!name || !email || !password) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Provide all necessary fields",
-      });
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Provide all necessary fields" });
     }
 
     const user = await User.create({ name, email, password });
+    console.log("2. user created:", user._id);
+
     await sendEmail(user.email, "welcome", { name: user.name });
+    console.log("3. email sent");
+
     return res.status(201).json({
       status: "success",
       message: "User created successfully",
     });
   } catch (error) {
-    console.log("signin error : ", error);
-    return res.status(500).json({
-      status: "fail",
-      message: error.message,
-    });
+    console.log("signup error:", error);
+    return res.status(500).json({ status: "fail", message: error.message });
   }
 };
 
