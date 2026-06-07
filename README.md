@@ -106,6 +106,7 @@ SQL query exec/
 │   │   ├── authController.js     # Authentication logic
 │   │   ├── queryController.js    # SQL execution logic
 │   │   ├── assignmentController.js
+│   │   ├── userController.js     # User management
 │   │   └── hintController.js     # Hint generation
 │   ├── models/
 │   │   ├── userModel.js          # User schema
@@ -712,6 +713,6 @@ For issues, questions, or suggestions:
 
 ---
 
-**Last Updated**: June 2026
+**Last Updated**: June 7, 2026
 
 Happy Learning! 🚀
