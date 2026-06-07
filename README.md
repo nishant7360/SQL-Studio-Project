@@ -16,6 +16,9 @@ A full-stack web application designed to help users learn SQL through interactiv
 - [API Documentation](#api-documentation)
 - [Features Detailed](#features-detailed)
 - [Usage Guide](#usage-guide)
+- [SEO Optimization](#seo-optimization)
+- [Performance Optimization](#performance-optimization)
+- [Error Handling](#error-handling)
 
 ---
 
