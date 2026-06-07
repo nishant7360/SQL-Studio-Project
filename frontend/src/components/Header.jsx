@@ -69,13 +69,16 @@ function Header({ user, isAuthenticated }) {
                   >
                     <Avatar className="h-9 w-9">
                       <AvatarImage src="" alt="User" />
-                      <AvatarFallback className="bg-zinc-700 text-zinc-100">
-                        {user?.avatar ? (
-                          <img src={user.avatar} alt="avatar" />
-                        ) : (
-                          user?.name?.[0]?.toUpperCase()
-                        )}
-                      </AvatarFallback>
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage
+                          src={user?.avatar ?? ""}
+                          alt="User"
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="bg-zinc-700 text-zinc-100">
+                          {user?.name?.[0]?.toUpperCase() ?? "U"}
+                        </AvatarFallback>
+                      </Avatar>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
