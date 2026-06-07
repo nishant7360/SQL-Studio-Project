@@ -24,7 +24,8 @@ A full-stack web application designed to help users learn SQL through interactiv
 This platform provides an interactive environment for users to:
 
 - Learn SQL by solving real-world database problems
-- Execute queries against PostgreSQL databases with seeded data
+- Execute queries against PostgreSQL datasets with seeded data
+- Store user data, assignments, and progress tracking in MongoDB
 - Receive AI-generated hints when stuck (powered by Groq API)
 - Track learning progress and view performance analytics
 - Manage user authentication with secure JWT tokens
@@ -59,7 +60,7 @@ This platform provides an interactive environment for users to:
 - View learning statistics and progress
 - Difficulty ring visualization showing proficiency across levels
 - Solved questions counter
-- Profile customization
+- Profile customization with avatar upload (Cloudinary)
 
 ### ⚙️ Settings
 
@@ -74,11 +75,13 @@ This platform provides an interactive environment for users to:
 
 - **Runtime**: Node.js
 - **Framework**: Express.js
-- **Database**: PostgreSQL (with Neon for serverless)
+- **Main Database**: MongoDB (user data, assignments, submissions)
+- **Query Execution Database**: PostgreSQL (with Neon for serverless - SQL problem datasets)
 - **Authentication**: JWT + bcrypt
-- **ORM**: Mongoose (for user management)
+- **ODM**: Mongoose (MongoDB object modeling)
 - **AI Integration**: Groq SDK
 - **Email**: Nodemailer
+- **File Upload**: Cloudinary (user avatar storage)
 - **Other**: Morgan (logging), CORS, Cookie Parser
 
 ### Frontend
@@ -120,6 +123,7 @@ SQL query exec/
 │       ├── db.js                 # Database connection
 │       ├── groq.js               # Groq AI client
 │       ├── sendMail.js           # Email service
+│       ├── cloudinary.js         # Cloudinary avatar upload
 │       ├── cookieOption.js       # Cookie config
 │       ├── pgSeeding.js          # Database seeding
 │       └── seedAssignments.js    # Assignment seeding
@@ -175,19 +179,22 @@ graph TB
     Frontend[React Frontend<br/>Vite + TailwindCSS]
     BackendServer[Node.js Server<br/>Express.js]
     JWT[JWT Auth<br/>HTTP-only Cookies]
-    Postgres[(PostgreSQL Database<br/>with Neon)]
+    MongoDB[(MongoDB<br/>User Data & Assignments)]
+    Postgres[(PostgreSQL<br/>Query Execution Datasets)]
     GroqAPI[Groq AI API<br/>Hint Generation]
     EmailService[Email Service<br/>Nodemailer]
 
     Client <-->|HTTP/HTTPS| Frontend
     Frontend <-->|REST API| BackendServer
     BackendServer <-->|Verify Token| JWT
-    BackendServer <-->|Query Execution| Postgres
+    BackendServer <-->|User & Assignment Data| MongoDB
+    BackendServer <-->|Execute SQL Queries| Postgres
     BackendServer <-->|Generate Hints| GroqAPI
     BackendServer <-->|Send Emails| EmailService
 
     style Frontend fill:#61dafb,stroke:#333,stroke-width:2px,color:#000
     style BackendServer fill:#90c53f,stroke:#333,stroke-width:2px,color:#000
+    style MongoDB fill:#13aa52,stroke:#333,stroke-width:2px,color:#fff
     style Postgres fill:#336791,stroke:#333,stroke-width:2px,color:#fff
     style GroqAPI fill:#ff6b6b,stroke:#333,stroke-width:2px,color:#fff
 ```
@@ -199,8 +206,10 @@ graph TB
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- PostgreSQL / Neon Database
+- MongoDB (for user and assignment data)
+- PostgreSQL / Neon Database (for SQL query execution datasets)
 - Groq API Key (for AI hints)
+- Cloudinary Account (for avatar uploads)
 - Email service credentials (Gmail, SendGrid, etc.)
 
 ### Backend Setup
@@ -215,7 +224,10 @@ npm install
 2. **Configure Environment Variables** (`.env`)
 
 ```env
-# Database
+# MongoDB (Main Database)
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname
+
+# PostgreSQL (Query Execution)
 DATABASE_URL=postgresql://user:password@host:port/dbname
 NEON_CONNECTION_STRING=<your-neon-connection-string>
 
@@ -229,6 +241,11 @@ AUTH_PASS=your-app-password
 
 # Groq AI
 GROQ_API_KEY=your-groq-api-key
+
+# Cloudinary (Avatar Upload)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 
 # Server
 PORT=5000
@@ -520,7 +537,7 @@ flowchart LR
 
 - Only SELECT queries allowed (no UPDATE, DELETE, INSERT)
 - Dynamic table name rewriting prevents conflicts
-- Isolated databases per assignment seed
+- Isolated PostgreSQL databases per assignment seed
 - Query timeout protection
 
 **Query Flow:**
@@ -528,12 +545,12 @@ flowchart LR
 1. User writes SQL query
 2. Backend validates syntax
 3. Table names are rewritten (e.g., `users` → `q1_users`)
-4. Query executed against PostgreSQL
+4. Query executed against PostgreSQL dataset
 5. Results returned and compared with expected output
 
 ### 3. Assignment Management
 
-**Assignment Structure:**
+**Assignment Structure (MongoDB):**
 
 ```javascript
 {
@@ -576,6 +593,22 @@ flowchart LR
 - Difficulty ring showing proficiency
 - Progress bar for each difficulty level
 - Achievement badges
+
+### 6. User Avatar Upload (Cloudinary)
+
+**Avatar Management:**
+
+- Upload custom profile avatars via Cloudinary
+- Image optimization and CDN delivery
+- Secure cloud storage
+- Easy profile customization
+
+**Features:**
+
+- Direct upload from browser
+- Automatic image scaling
+- Persistent storage across sessions
+- Fast content delivery
 
 ---
 
@@ -673,13 +706,14 @@ node backend/utils/seedAssignments.js
 
 **Common Errors & Solutions:**
 
-| Error                                 | Solution                                   |
-| ------------------------------------- | ------------------------------------------ |
-| `Invalid query - Only SELECT allowed` | Ensure query starts with SELECT            |
-| `Table not found`                     | Check table names match sample data        |
-| `Connection timeout`                  | Verify PostgreSQL is running               |
-| `GROQ_API_KEY missing`                | Add key to .env file                       |
-| `CORS error`                          | Verify frontend URL in backend CORS config |
+| Error                                 | Solution                                    |
+| ------------------------------------- | ------------------------------------------- |
+| `Invalid query - Only SELECT allowed` | Ensure query starts with SELECT             |
+| `Table not found`                     | Check table names match sample data         |
+| `MongoDB connection error`            | Verify MongoDB URI and credentials in .env  |
+| `PostgreSQL connection timeout`       | Verify PostgreSQL is running and accessible |
+| `GROQ_API_KEY missing`                | Add key to .env file                        |
+| `CORS error`                          | Verify frontend URL in backend CORS config  |
 
 ---
 
