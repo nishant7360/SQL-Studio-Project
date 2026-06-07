@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://sql-studio-f9qz.onrender.com/api/auth";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
 
 export async function signup({ name, email, password }) {
   try {
@@ -105,5 +105,34 @@ export async function resetPassword(email, otp, newPassword) {
     throw new Error(
       error.response?.data?.message || "Failed to reset password",
     );
+  }
+}
+
+export async function uploadAvatar(file) {
+  try {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const response = await axios.post(`${BASE_URL}/uploadAvatar`, formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to upload avatar");
+  }
+}
+
+export async function updateInfo(name) {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/update-info`,
+      { name },
+      { withCredentials: true },
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to update info");
   }
 }

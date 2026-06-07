@@ -5,7 +5,11 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-
+  avatar: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/dsuof4hll/image/upload/v1780806965/sql-studio/avatars/io1mhsiy6ysajl6inoxg.png",
+  },
   totalQuestionSolved: {
     type: Number,
     default: 0,

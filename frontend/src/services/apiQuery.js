@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = " https://sql-studio-f9qz.onrender.com/api/query";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/query`;
 
 export async function excQuery(query, id) {
   const cleanQuery = query

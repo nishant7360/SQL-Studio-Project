@@ -1,7 +1,14 @@
+import useUpdateInfo from "@/features/auth/useUpdateInfo";
 import { useState } from "react";
+import { Spinner } from "./ui/spinner";
 
 function ProfileTab({ user }) {
   const [name, setName] = useState(user?.name ?? "");
+  const { update, isUpdating } = useUpdateInfo();
+
+  function handleUpdate() {
+    update(name);
+  }
 
   return (
     <div>
@@ -24,8 +31,11 @@ function ProfileTab({ user }) {
           />
           <p className="text-[10px] text-zinc-600">Email cannot be changed</p>
         </div>
-        <button className="h-9 px-4 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity w-fit">
-          Save Changes
+        <button
+          className="h-9 px-4 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity w-fit"
+          onClick={handleUpdate}
+        >
+          {isUpdating ? <Spinner /> : "Save Changes"}
         </button>
       </div>
     </div>

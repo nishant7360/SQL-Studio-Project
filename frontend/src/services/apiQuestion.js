@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = " https://sql-studio-f9qz.onrender.com/api/assignment";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/assignment`;
 
 export async function getAllQuestions() {
   try {
