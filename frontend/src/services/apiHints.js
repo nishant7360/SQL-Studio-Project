@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = `${import.meta.env.VITE_API_URL}/api/hints`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/hint`;
 
 export async function getHints(id, query, hints = []) {
   try {
